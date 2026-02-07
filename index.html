@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>FadingBoy Studio</title>
+  <meta name="description" content="FadingBoy Studio — psychological horror. Barn Haunt is in development." />
+  <style>
+    :root { --bg:#070709; --fg:#e9e7e3; --mut:#9a968f; --line:#1b1a1f; }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0; min-height:100vh;
+      background: radial-gradient(900px 500px at 50% 30%, #0c0b10 0%, var(--bg) 60%);
+      color:var(--fg);
+      font: 16px/1.6 ui-serif, Georgia, "Times New Roman", Times, serif;
+      letter-spacing:.2px;
+      display:flex; align-items:center; justify-content:center;
+      padding:32px;
+    }
+    main{
+      width:min(720px, 100%);
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:28px 26px;
+      background: rgba(0,0,0,.22);
+      box-shadow: 0 20px 80px rgba(0,0,0,.45);
+    }
+    .kicker{ color:var(--mut); text-transform:uppercase; letter-spacing:2px; font-size:12px; }
+    h1{ margin:10px 0 8px; font-size:38px; font-weight:600; }
+    p{ margin:10px 0; color: #d8d4cc; }
+    .line{ height:1px; background:var(--line); margin:18px 0; }
+    .small{ color:var(--mut); font-size:14px; }
+    a{ color:var(--fg); text-decoration:none; border-bottom:1px solid rgba(233,231,227,.35); }
+    a:hover{ border-bottom-color: rgba(233,231,227,.75); }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="kicker">FadingBoy Studio</div>
+    <h1>We make horror that waits.</h1>
+
+    <p>
+      <strong>Barn Haunt</strong> is in development — a slow-burn psychological horror about guilt, faith,
+      and what remains after the collar is gone.
+    </p>
+
+    <div class="line"></div>
+
+    <p class="small">
+      More soon.
+      <!-- When ready: add Steam / socials here -->
+    </p>
+  </main>
+</body>
+</html>
