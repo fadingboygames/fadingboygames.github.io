@@ -3,53 +3,348 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#070609" />
+
   <title>FadingBoy Studio</title>
   <meta name="description" content="FadingBoy Studio — psychological horror. Barn Haunt is in development." />
+
   <style>
-    :root { --bg:#070709; --fg:#e9e7e3; --mut:#9a968f; --line:#1b1a1f; }
+    :root{
+      --bg:#070609;
+      --bg2:#0b0a10;
+      --fg:#ebe7df;
+      --mut:#a29c92;
+      --dim:#6f6a62;
+      --line:rgba(235,231,223,.12);
+      --accent:#c9b68a; /* subtle “candle” */
+      --shadow:rgba(0,0,0,.55);
+    }
+
     *{ box-sizing:border-box; }
+    html,body{ height:100%; }
     body{
-      margin:0; min-height:100vh;
-      background: radial-gradient(900px 500px at 50% 30%, #0c0b10 0%, var(--bg) 60%);
+      margin:0;
       color:var(--fg);
-      font: 16px/1.6 ui-serif, Georgia, "Times New Roman", Times, serif;
-      letter-spacing:.2px;
-      display:flex; align-items:center; justify-content:center;
-      padding:32px;
+      background:
+        radial-gradient(900px 520px at 52% 28%, rgba(24,20,33,.92) 0%, rgba(7,6,9,1) 65%),
+        radial-gradient(700px 500px at 20% 70%, rgba(20,16,26,.55) 0%, rgba(7,6,9,0) 60%),
+        linear-gradient(180deg, var(--bg2), var(--bg));
+      font: 16px/1.65 ui-serif, Georgia, "Times New Roman", Times, serif;
+      letter-spacing:.15px;
+      overflow-x:hidden;
     }
-    main{
-      width:min(720px, 100%);
+
+    /* Subtle film grain (CSS-only) */
+    body::before{
+      content:"";
+      position:fixed; inset:-30%;
+      pointer-events:none;
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+      opacity:.07;
+      transform:rotate(2deg);
+      animation: grain 8s steps(10) infinite;
+    }
+    @keyframes grain{
+      0%{ transform:translate3d(0,0,0) rotate(2deg); }
+      20%{ transform:translate3d(-2%,1%,0) rotate(2deg); }
+      40%{ transform:translate3d(1%,-2%,0) rotate(2deg); }
+      60%{ transform:translate3d(2%,1%,0) rotate(2deg); }
+      80%{ transform:translate3d(-1%,2%,0) rotate(2deg); }
+      100%{ transform:translate3d(0,0,0) rotate(2deg); }
+    }
+
+    /* Low, irregular “light” pulse (very subtle) */
+    body::after{
+      content:"";
+      position:fixed; inset:0;
+      pointer-events:none;
+      background:
+        radial-gradient(500px 260px at 55% 28%, rgba(201,182,138,.10), rgba(201,182,138,0) 65%),
+        radial-gradient(420px 220px at 42% 35%, rgba(201,182,138,.06), rgba(201,182,138,0) 70%);
+      mix-blend-mode:screen;
+      opacity:.75;
+      animation: candle 10s ease-in-out infinite;
+    }
+    @keyframes candle{
+      0%,100%{ opacity:.60; filter:blur(0px); }
+      35%{ opacity:.78; filter:blur(.4px); }
+      62%{ opacity:.66; filter:blur(.2px); }
+      80%{ opacity:.74; filter:blur(.5px); }
+    }
+
+    .wrap{
+      min-height:100%;
+      display:grid;
+      place-items:center;
+      padding:34px 18px;
+    }
+
+    .panel{
+      width:min(820px, 100%);
       border:1px solid var(--line);
-      border-radius:20px;
-      padding:28px 26px;
+      border-radius:24px;
+      padding:32px 28px 26px;
       background: rgba(0,0,0,.22);
-      box-shadow: 0 20px 80px rgba(0,0,0,.45);
+      box-shadow: 0 30px 110px var(--shadow);
+      position:relative;
+      overflow:hidden;
     }
-    .kicker{ color:var(--mut); text-transform:uppercase; letter-spacing:2px; font-size:12px; }
-    h1{ margin:10px 0 8px; font-size:38px; font-weight:600; }
-    p{ margin:10px 0; color: #d8d4cc; }
-    .line{ height:1px; background:var(--line); margin:18px 0; }
-    .small{ color:var(--mut); font-size:14px; }
-    a{ color:var(--fg); text-decoration:none; border-bottom:1px solid rgba(233,231,227,.35); }
-    a:hover{ border-bottom-color: rgba(233,231,227,.75); }
+
+    /* A barely-wrong line to trigger unease */
+    .panel::before{
+      content:"";
+      position:absolute;
+      top:22px;
+      left:6%;
+      width:88%;
+      height:1px;
+      background: linear-gradient(90deg, transparent, rgba(235,231,223,.16), transparent);
+      opacity:.65;
+    }
+
+    header{
+      display:flex;
+      align-items:baseline;
+      justify-content:space-between;
+      gap:18px;
+      margin-top:10px;
+    }
+
+    .brand{
+      font-size:12px;
+      letter-spacing:2.2px;
+      text-transform:uppercase;
+      color:var(--mut);
+      user-select:none;
+    }
+
+    .sigil{
+      width:10px; height:10px;
+      border-radius:999px;
+      background: rgba(201,182,138,.35);
+      box-shadow: 0 0 0 1px rgba(201,182,138,.18), 0 0 18px rgba(201,182,138,.20);
+      transform: translateY(-1px);
+      opacity:.8;
+    }
+
+    h1{
+      margin:22px 0 10px;
+      font-weight:600;
+      font-size: clamp(40px, 5.8vw, 66px);
+      line-height:1.07;
+      letter-spacing:.35px;
+      text-shadow: 0 10px 30px rgba(0,0,0,.65);
+    }
+
+    /* Subtle flicker, not “neon” */
+    .flicker{
+      display:inline-block;
+      animation: flicker 14s infinite;
+      will-change: opacity, transform, filter;
+    }
+    @keyframes flicker{
+      0%, 100% { opacity:1; filter:none; transform:none; }
+      8% { opacity:.98; }
+      8.6% { opacity:.92; }
+      9.2% { opacity:.99; }
+      41% { opacity:.97; }
+      41.6% { opacity:.90; transform: translateY(.4px); }
+      42.1% { opacity:.99; transform:none; }
+      73% { opacity:.985; }
+      73.4% { opacity:.92; filter: blur(.25px); }
+      73.9% { opacity:.99; filter:none; }
+    }
+
+    .lede{
+      margin:0;
+      max-width: 56ch;
+      color: rgba(235,231,223,.88);
+      font-size: 18px;
+    }
+
+    .lede strong{
+      color: rgba(235,231,223,.96);
+      font-weight:600;
+    }
+
+    .whisper{
+      display:inline-block;
+      border-bottom:1px solid rgba(235,231,223,.18);
+      padding-bottom:2px;
+      transition: border-color .25s ease, opacity .25s ease, transform .25s ease;
+    }
+    .whisper:hover{
+      border-bottom-color: rgba(201,182,138,.55);
+      opacity:.94;
+      transform: translateY(1px);
+    }
+
+    .sep{
+      height:1px;
+      background: linear-gradient(90deg, transparent, rgba(235,231,223,.14), transparent);
+      margin:22px 0 18px;
+      width:92%;
+      margin-left:4%;
+      opacity:.9;
+    }
+
+    .meta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px 16px;
+      align-items:center;
+      justify-content:space-between;
+      margin-top:6px;
+    }
+
+    .status{
+      color: var(--dim);
+      font-size:14px;
+      letter-spacing:.2px;
+    }
+
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      color: rgba(235,231,223,.78);
+      font-size:14px;
+      padding:10px 12px;
+      border:1px solid rgba(235,231,223,.12);
+      border-radius:999px;
+      background: rgba(0,0,0,.18);
+      user-select:none;
+    }
+
+    .dot{
+      width:6px; height:6px;
+      border-radius:999px;
+      background: rgba(201,182,138,.55);
+      box-shadow: 0 0 0 1px rgba(201,182,138,.18);
+      opacity:.9;
+    }
+
+    .ctaRow{
+      margin-top:14px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+    }
+
+    a.button{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      text-decoration:none;
+      color: rgba(235,231,223,.92);
+      padding:12px 14px;
+      border-radius:14px;
+      border:1px solid rgba(235,231,223,.14);
+      background: rgba(0,0,0,.20);
+      box-shadow: 0 14px 50px rgba(0,0,0,.35);
+      transition: transform .18s ease, border-color .18s ease, background .18s ease, opacity .18s ease;
+    }
+    a.button:hover{
+      transform: translateY(-1px);
+      border-color: rgba(201,182,138,.32);
+      background: rgba(0,0,0,.26);
+      opacity:.98;
+    }
+
+    .hint{
+      color: rgba(235,231,223,.52);
+      font-size:13px;
+    }
+
+    /* “Confession cursor” */
+    .cursor{
+      display:inline-block;
+      width:10px;
+      height:1.1em;
+      margin-left:6px;
+      transform: translateY(3px);
+      background: rgba(201,182,138,.35);
+      opacity:.8;
+      animation: blink 1.2s steps(2) infinite;
+    }
+    @keyframes blink{
+      0%,49%{ opacity:.75; }
+      50%,100%{ opacity:.08; }
+    }
+
+    footer{
+      margin-top:22px;
+      display:flex;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+      color: rgba(235,231,223,.40);
+      font-size:12px;
+      letter-spacing:.25px;
+      user-select:none;
+    }
+
+    /* Small screens */
+    @media (max-width:520px){
+      .panel{ padding:26px 18px 20px; border-radius:20px; }
+      .lede{ font-size:17px; }
+      .tag{ width:100%; justify-content:center; }
+      .meta{ justify-content:center; }
+      footer{ justify-content:center; text-align:center; }
+    }
+
+    /* Respect reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      *{ animation:none !important; transition:none !important; scroll-behavior:auto !important; }
+      body::before, body::after{ display:none; }
+    }
   </style>
 </head>
+
 <body>
-  <main>
-    <div class="kicker">FadingBoy Studio</div>
-    <h1>We make horror that waits.</h1>
+  <div class="wrap">
+    <main class="panel" role="main" aria-label="FadingBoy Studio landing">
+      <header>
+        <div class="brand">FadingBoy Studio</div>
+        <div class="sigil" aria-hidden="true"></div>
+      </header>
 
-    <p>
-      <strong>Barn Haunt</strong> is in development — a slow-burn psychological horror about guilt, faith,
-      and what remains after the collar is gone.
-    </p>
+      <h1><span class="flicker">We make horror that waits.</span><span class="cursor" aria-hidden="true"></span></h1>
 
-    <div class="line"></div>
+      <p class="lede">
+        <strong>Barn Haunt</strong> is in development — a slow-burn psychological horror about
+        <span class="whisper" title="Some doors open inward.">guilt</span>,
+        <span class="whisper" title="Faith does not leave cleanly.">faith</span>,
+        and what remains after the collar is gone.
+      </p>
 
-    <p class="small">
-      More soon.
-      <!-- When ready: add Steam / socials here -->
-    </p>
-  </main>
+      <div class="sep" aria-hidden="true"></div>
+
+      <div class="meta">
+        <div class="tag"><span class="dot" aria-hidden="true"></span> Working title. Private development.</div>
+        <div class="status">More soon. No previews yet.</div>
+      </div>
+
+      <div class="ctaRow" aria-label="Links">
+        <!-- Replace # later with real links (Steam, YouTube, etc.) -->
+        <a class="button" href="#" onclick="return false" aria-disabled="true" title="Not yet.">
+          Enter the haunt (soon)
+        </a>
+        <span class="hint">If you found this early, keep it to yourself.</span>
+      </div>
+
+      <footer>
+        <div>© <span id="y"></span> FadingBoy Studio</div>
+        <div>Confession will follow.</div>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    // tiny, safe: year only
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
